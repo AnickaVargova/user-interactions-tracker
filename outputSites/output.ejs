@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking output</title>
+</head>
+
+<body>
+    <h1>Tracking output</h1>
+
+    <% requests.forEach((request)=>{%>
+        <p>
+        <h3>User session</h3>
+        <% for (key in request) { %>
+
+            <div>
+                <span>
+                    <%=key%>: 
+                </span>
+                <span>
+                    <%=request[key]%>
+                </span>
+            </div>
+            <%} %>
+
+        
+        </p>
+        <%});%>
+</body>
+
+</html>
