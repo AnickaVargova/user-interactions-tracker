@@ -40,18 +40,19 @@ describe(
     }
 );
 
+//TODO solve current type
 describe('detectFirstUser returns correct value', () => {
     test('should return true when user visited web long ago',
-        () => { expect(detectFirstTimeUser(true, { timestamp: new Date("01/01/2020 16:00:00").getTime() })).toBe(true) })
+        () => { expect(detectFirstTimeUser(true, new Date("01/01/2020 16:00:00").getTime())).toBe(true) })
     test(
         'should return false when user visited web an hour ago',
-        () => { expect(detectFirstTimeUser(true, { timestamp: Date.now() - 60 * 60 * 1000 })).toBe(false) })
+        () => { expect(detectFirstTimeUser(true, Date.now() - 60 * 60 * 1000)).toBe(false) })
     test(
         'should return false when there is no local storage available',
-        () => { expect(detectFirstTimeUser(false, null)).toBe(false) })
+        () => { expect(detectFirstTimeUser(false, 0)).toBe(false) })
     test(
         'should return true when user visited web for the very first time and there is local storage available',
-        () => { expect(detectFirstTimeUser(true, null)).toBe(true) })
+        () => { expect(detectFirstTimeUser(true, 0)).toBe(true) })
 });
 
 

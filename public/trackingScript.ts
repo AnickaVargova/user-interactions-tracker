@@ -1,10 +1,10 @@
-import { detectFirstTimeUser, sendFirstTimeRequest, storageAvailable } from "./utils.js";
-import { TRACKING_KEY, SERVER_URL } from "./constants.js";
+import { detectFirstTimeUser, sendFirstTimeRequest, storageAvailable } from "./utils";
+import { TRACKING_KEY, SERVER_URL } from "./constants";
 
  window.addEventListener("load", () => {
 
     // Tracked event: A user visited the website for the first time in the last 7 days
-    if (detectFirstTimeUser(storageAvailable(), localStorage.getItem(TRACKING_KEY))) {
+    if (detectFirstTimeUser(storageAvailable(), Number(localStorage.getItem(TRACKING_KEY)))) {
         localStorage.removeItem(TRACKING_KEY);
         sendFirstTimeRequest();
     };
@@ -50,6 +50,10 @@ window.addEventListener('beforeunload', () => fetch(SERVER_URL, {
 );
 
 // Custom tracking function (example usage: called from navigation.ejs)
+
+declare global {
+    interface Window { track: (customObj: Record<string, any>) => void }
+}
 window.track = (customObj) => {
     if (document.readyState === 'complete') {
         fetch(SERVER_URL, {

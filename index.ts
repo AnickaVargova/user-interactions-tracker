@@ -2,7 +2,7 @@ import express from 'express';
 import path from 'path';
 import { Server } from 'http';
 import cors from 'cors';
-import { URL } from 'url';
+import {fileURLToPath} from 'url';
 
 const app = express();
 app.use(express.static('public'));
@@ -10,16 +10,16 @@ app.use(express.static('public'));
 // website urls can be added here
 const whitelist = ['http://localhost:4001'];
 const corsOptions = { origin:  whitelist };
-
-const __dirname = new URL('.', import.meta.url).pathname;
 app.use(cors(corsOptions));
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.set('views', path.join(__dirname, 'demoSites'));
 app.set('view engine', 'ejs');
 app.use(express.json());
-export const server = Server(app);
+export const server = new Server(app);
 
 const output = express();
-export const outputServer = Server(output);
+export const outputServer = new Server(output);
 
 const corsOutputOptions = {
   origin: 'http://localhost:4002/',
@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-const requests = [];
+const requests = [] as Record<string, any>;
 
 app.post('/', (req, res) => {
   console.log(req.body);
