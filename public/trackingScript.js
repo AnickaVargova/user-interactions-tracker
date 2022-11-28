@@ -1,16 +1,9 @@
-import { detectFirstTimeUser, sendFirstTimeRequest, storageAvailable } from "./utils.js";
-import { TRACKING_KEY, SERVER_URL } from "./constants.js";
+const SERVER_URL = 'http://localhost:4001';
 
  window.addEventListener("load", () => {
-
-    // Tracked event: A user visited the website for the first time in the last 7 days
-    if (detectFirstTimeUser(storageAvailable(), localStorage.getItem(TRACKING_KEY))) {
-        localStorage.removeItem(TRACKING_KEY);
-        sendFirstTimeRequest();
-    };
-
+  
     // Tracked event: A user visited the website
-    fetch(SERVER_URL, {
+     fetch(SERVER_URL, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
