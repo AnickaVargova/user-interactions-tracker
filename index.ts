@@ -5,7 +5,7 @@ import cors from 'cors';
 import {fileURLToPath} from 'url';
 
 const app = express();
-app.use(express.static('public'));
+app.use(express.static('dist'));
 
 // website urls can be added here
 const whitelist = ['http://localhost:4001'];
