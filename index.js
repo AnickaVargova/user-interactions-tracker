@@ -3,6 +3,7 @@ import path from 'path';
 import { Server } from 'http';
 import cors from 'cors';
 import { URL } from 'url';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 app.use(express.static('dist'));
@@ -13,6 +14,7 @@ const corsOptions = { origin:  whitelist };
 
 const __dirname = new URL('.', import.meta.url).pathname;
 app.use(cors(corsOptions));
+app.use(cookieParser());
 app.set('views', path.join(__dirname, 'demoSites'));
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -29,11 +31,16 @@ output.set('views', path.join(__dirname, 'outputSites'));
 output.set('view engine', 'ejs');
 output.use(express.json());
 
+const requests = [];
+
 app.get('/', (req, res) => {
+// Tracked event: a user visited the website for the first time
+  if(!req.cookies?.tracking) {
+    res.cookie('tracking', 1 , { expires: new Date(Date.now() + 7 * 86400000), httpOnly: true });
+    requests.push({timestamp: Date.now(), text: 'A user visited the website for the first time in the last 7 days.'});
+  }
   res.render('index');
 });
-
-const requests = [];
 
 app.post('/', (req, res) => {
   console.log(req.body);
